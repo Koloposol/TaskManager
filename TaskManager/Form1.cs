@@ -18,6 +18,8 @@ namespace TaskManager
 
         private List<Process> processes = null;
 
+        private ListViewItemComparer comparer = null;
+
         public Form1()
         {
             InitializeComponent();
@@ -51,7 +53,7 @@ namespace TaskManager
 
                     string[] row = new string[]
                     {
-                        p.ProcessName.ToString(), Math.Round(memSize, 1).ToString() + " MB"
+                        p.ProcessName.ToString(), Math.Round(memSize, 1).ToString()// + " MB"
                     };
 
                     listView1.Items.Add(new ListViewItem(row));
@@ -178,6 +180,9 @@ namespace TaskManager
             processes = Process.GetProcesses().ToList<Process>();
 
             RefreshProcessesList();
+
+            comparer = new ListViewItemComparer();
+            comparer.ColumnIndex = 0;
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
@@ -294,6 +299,22 @@ namespace TaskManager
             List<Process> filteredProcesses = processes.Where((x) => x.ProcessName.ToLower().Contains(toolStripTextBox1.Text.ToLower())).ToList<Process>();
 
             RefreshProcessesList(filteredProcesses, toolStripTextBox1.Text);
+        }
+
+        private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            comparer.ColumnIndex = e.Column;
+
+            comparer.SortDirection = comparer.SortDirection == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
+
+            listView1.ListViewItemSorter = comparer;
+
+            listView1.Sort();
+        }
+
+        private void выходToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

@@ -60,6 +60,7 @@ namespace TaskManager
                     pc.Dispose();
                 }
 
+                toolStripTextBox1.Text = "";
                 Text = "Processes running: " + processes.Count.ToString();
 
             }
@@ -79,27 +80,30 @@ namespace TaskManager
 
                 foreach (Process p in processes)
                 {
-                    memSize = 0;
-
-                    PerformanceCounter pc = new PerformanceCounter();
-                    pc.CategoryName = "Process";
-                    pc.CounterName = "Working Set - Private";
-                    pc.InstanceName = p.ProcessName;
-
-                    memSize = (double)pc.NextValue() / (1000 * 1000);
-
-                    string[] row = new string[]
+                    if (p != null)
                     {
+                        memSize = 0;
+
+                        PerformanceCounter pc = new PerformanceCounter();
+                        pc.CategoryName = "Process";
+                        pc.CounterName = "Working Set - Private";
+                        pc.InstanceName = p.ProcessName;
+
+                        memSize = (double)pc.NextValue() / (1000 * 1000);
+
+                        string[] row = new string[]
+                        {
                         p.ProcessName.ToString(), Math.Round(memSize, 1).ToString() + " MB"
-                    };
+                        };
 
-                    listView1.Items.Add(new ListViewItem(row));
+                        listView1.Items.Add(new ListViewItem(row));
 
-                    pc.Close();
-                    pc.Dispose();
+                        pc.Close();
+                        pc.Dispose();
+                    }
                 }
 
-                Text = "Processes running: " + processes.Count.ToString();
+                Text = $"Processes running '{keyword}' : " + processes.Count.ToString();
 
             }
             catch (Exception)
@@ -281,6 +285,15 @@ namespace TaskManager
             { 
             
             }
+        }
+
+        private void toolStripTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            GetProcesses();
+
+            List<Process> filteredProcesses = processes.Where((x) => x.ProcessName.ToLower().Contains(toolStripTextBox1.Text.ToLower())).ToList<Process>();
+
+            RefreshProcessesList(filteredProcesses, toolStripTextBox1.Text);
         }
     }
 }

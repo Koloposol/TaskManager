@@ -71,35 +71,41 @@ namespace TaskManager
 
         private void RefreshProcessesList(List<Process> processes, string keyword)
         {
-            listView1.Items.Clear();
-
-            double memSize = 0;
-
-            foreach (Process p in processes)
+            try
             {
-                memSize = 0;
+                listView1.Items.Clear();
 
-                PerformanceCounter pc = new PerformanceCounter();
-                pc.CategoryName = "Process";
-                pc.CounterName = "Working Set - Private";
-                pc.InstanceName = p.ProcessName;
+                double memSize = 0;
 
-                memSize = (double)pc.NextValue() / (1000 * 1000);
-
-                string[] row = new string[]
+                foreach (Process p in processes)
                 {
-                    p.ProcessName.ToString(), Math.Round(memSize, 1).ToString() + " MB"
-                };
+                    memSize = 0;
 
-                listView1.Items.Add(new ListViewItem(row));
+                    PerformanceCounter pc = new PerformanceCounter();
+                    pc.CategoryName = "Process";
+                    pc.CounterName = "Working Set - Private";
+                    pc.InstanceName = p.ProcessName;
 
-                pc.Close();
-                pc.Dispose();
+                    memSize = (double)pc.NextValue() / (1000 * 1000);
+
+                    string[] row = new string[]
+                    {
+                        p.ProcessName.ToString(), Math.Round(memSize, 1).ToString() + " MB"
+                    };
+
+                    listView1.Items.Add(new ListViewItem(row));
+
+                    pc.Close();
+                    pc.Dispose();
+                }
+
+                Text = "Processes running: " + processes.Count.ToString();
+
             }
+            catch (Exception)
+            {
 
-            Text = $"Processes running {keyword} : " + processes.Count.ToString();
-
-        
+            }
         }
         //Завершить процесс
         private void KillProcess(Process process)
@@ -258,6 +264,22 @@ namespace TaskManager
             catch (Exception)
             {
 
+            }
+        }
+
+        private void запуститьНовуюЗадачуToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string path = Interaction.InputBox("Введите имя программы", "Запуск новой задачи");
+
+            try
+            {
+                Process.Start(path);
+
+                RefreshProcessesList();
+            }
+            catch(Exception) 
+            { 
+            
             }
         }
     }

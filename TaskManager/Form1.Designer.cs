@@ -46,6 +46,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.завершитьПроцессToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.завершитьДеревоПроцессовToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.запуститьНовуюЗадачуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.toolStrip2.SuspendLayout();
@@ -65,6 +66,7 @@
             // файлToolStripMenuItem
             // 
             this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.запуститьНовуюЗадачуToolStripMenuItem,
             this.выходToolStripMenuItem});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
             this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
@@ -176,7 +178,7 @@
             this.завершитьПроцессToolStripMenuItem,
             this.завершитьДеревоПроцессовToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(239, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(239, 48);
             // 
             // завершитьПроцессToolStripMenuItem
             // 
@@ -191,6 +193,13 @@
             this.завершитьДеревоПроцессовToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
             this.завершитьДеревоПроцессовToolStripMenuItem.Text = "Завершить дерево процессов";
             this.завершитьДеревоПроцессовToolStripMenuItem.Click += new System.EventHandler(this.завершитьДеревоПроцессовToolStripMenuItem_Click);
+            // 
+            // запуститьНовуюЗадачуToolStripMenuItem
+            // 
+            this.запуститьНовуюЗадачуToolStripMenuItem.Name = "запуститьНовуюЗадачуToolStripMenuItem";
+            this.запуститьНовуюЗадачуToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.запуститьНовуюЗадачуToolStripMenuItem.Text = "Запустить новую задачу";
+            this.запуститьНовуюЗадачуToolStripMenuItem.Click += new System.EventHandler(this.запуститьНовуюЗадачуToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -237,6 +246,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem завершитьПроцессToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem завершитьДеревоПроцессовToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem запуститьНовуюЗадачуToolStripMenuItem;
     }
 }
 

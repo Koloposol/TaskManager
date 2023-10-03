@@ -107,6 +107,7 @@
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(121, 22);
             this.toolStripButton1.Text = "Завершить процесс";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // toolStripButton2
             // 
@@ -116,6 +117,7 @@
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(107, 22);
             this.toolStripButton2.Text = "Обновить список";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // toolStripButton3
             // 
@@ -125,6 +127,7 @@
             this.toolStripButton3.Name = "toolStripButton3";
             this.toolStripButton3.Size = new System.Drawing.Size(175, 22);
             this.toolStripButton3.Text = "Завершить дерево процессов";
+            this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
             // toolStripLabel1
             // 
@@ -173,19 +176,21 @@
             this.завершитьПроцессToolStripMenuItem,
             this.завершитьДеревоПроцессовToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(239, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(239, 70);
             // 
             // завершитьПроцессToolStripMenuItem
             // 
             this.завершитьПроцессToolStripMenuItem.Name = "завершитьПроцессToolStripMenuItem";
             this.завершитьПроцессToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
             this.завершитьПроцессToolStripMenuItem.Text = "Завершить процесс";
+            this.завершитьПроцессToolStripMenuItem.Click += new System.EventHandler(this.завершитьПроцессToolStripMenuItem_Click);
             // 
             // завершитьДеревоПроцессовToolStripMenuItem
             // 
             this.завершитьДеревоПроцессовToolStripMenuItem.Name = "завершитьДеревоПроцессовToolStripMenuItem";
             this.завершитьДеревоПроцессовToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
             this.завершитьДеревоПроцессовToolStripMenuItem.Text = "Завершить дерево процессов";
+            this.завершитьДеревоПроцессовToolStripMenuItem.Click += new System.EventHandler(this.завершитьДеревоПроцессовToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -201,6 +206,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "Form1";
             this.Text = "System Manager";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);

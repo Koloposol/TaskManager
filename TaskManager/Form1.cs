@@ -25,41 +25,48 @@ namespace TaskManager
 
         private void GetProcesses()
         {
-            //processes.Clear();
+            processes.Clear();
 
             processes = Process.GetProcesses().ToList<Process>();
         }
 
         private void RefreshProcessesList()
         {
-            listView1.Items.Clear();
-
-            double memSize = 0;
-
-            foreach (Process p in processes)
+            try
             {
-                memSize = 0;
+                listView1.Items.Clear();
 
-                PerformanceCounter pc = new PerformanceCounter();
-                pc.CategoryName = "Process";
-                pc.CounterName = "Working Set - Private";
-                pc.InstanceName = p.ProcessName;
+                double memSize = 0;
 
-                memSize = (double)pc.NextValue() / (1000 * 1000);
-
-                string[] row = new string[]
+                foreach (Process p in processes)
                 {
-                    p.ProcessName.ToString(), Math.Round(memSize, 1).ToString() + " MB"
-                };
+                    memSize = 0;
 
-                listView1.Items.Add(new ListViewItem(row));
+                    PerformanceCounter pc = new PerformanceCounter();
+                    pc.CategoryName = "Process";
+                    pc.CounterName = "Working Set - Private";
+                    pc.InstanceName = p.ProcessName;
 
-                pc.Close();
-                pc.Dispose();
+                    memSize = (double)pc.NextValue() / (1000 * 1000);
+
+                    string[] row = new string[]
+                    {
+                        p.ProcessName.ToString(), Math.Round(memSize, 1).ToString() + " MB"
+                    };
+
+                    listView1.Items.Add(new ListViewItem(row));
+
+                    pc.Close();
+                    pc.Dispose();
+                }
+
+                Text = "Processes running: " + processes.Count.ToString();
+
             }
+            catch (Exception)
+            {
 
-            Text = "Processes running: " + processes.Count.ToString();
-
+            }
         }
 
         private void RefreshProcessesList(List<Process> processes, string keyword)
@@ -152,6 +159,106 @@ namespace TaskManager
             }
 
             return parentID;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            processes = new List<Process>();
+
+            processes = Process.GetProcesses().ToList<Process>();
+
+            RefreshProcessesList();
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            GetProcesses();
+
+            RefreshProcessesList();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (listView1.SelectedItems[0] != null) 
+                {
+                    Process processToKill = processes.Where((x) => x.ProcessName == listView1.SelectedItems[0].SubItems[0].Text).ToList()[0];
+
+                    KillProcess(processToKill);
+
+                    GetProcesses();
+
+                    RefreshProcessesList();
+                }
+            }
+            catch(Exception) 
+            {
+            
+            }
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (listView1.SelectedItems[0] != null)
+                {
+                    Process processToKill = processes.Where((x) => x.ProcessName == listView1.SelectedItems[0].SubItems[0].Text).ToList()[0];
+
+                    KillProcessAndChildren(GetParentProcessId(processToKill));
+
+                    GetProcesses();
+
+                    RefreshProcessesList();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private void завершитьДеревоПроцессовToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (listView1.SelectedItems[0] != null)
+                {
+                    Process processToKill = processes.Where((x) => x.ProcessName == listView1.SelectedItems[0].SubItems[0].Text).ToList()[0];
+
+                    KillProcessAndChildren(GetParentProcessId(processToKill));
+
+                    GetProcesses();
+
+                    RefreshProcessesList();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private void завершитьПроцессToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (listView1.SelectedItems[0] != null)
+                {
+                    Process processToKill = processes.Where((x) => x.ProcessName == listView1.SelectedItems[0].SubItems[0].Text).ToList()[0];
+
+                    KillProcess(processToKill);
+
+                    GetProcesses();
+
+                    RefreshProcessesList();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

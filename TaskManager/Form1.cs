@@ -92,6 +92,66 @@ namespace TaskManager
 
             Text = $"Processes running {keyword} : " + processes.Count.ToString();
 
+        
+        }
+        //Завершить процесс
+        private void KillProcess(Process process)
+        {
+            process.Kill();
+
+            process.WaitForExit();
+        }
+
+        //Завершить дерево процессов
+        private void KillProcessAndChildren(int pId)
+        {
+            if (pId == 0) 
+            {
+                return;            
+            }
+
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pId);
+
+            ManagementObjectCollection objectsCollection = searcher.Get();
+
+            foreach (ManagementObject obj in objectsCollection)
+            {
+                KillProcessAndChildren(Convert.ToInt32(obj["ProcessID"]));
+            }
+
+            try
+            {
+                Process p = Process.GetProcessById(pId);
+
+                p.Kill();
+
+                p.WaitForExit();
+            }
+            catch (ArgumentException)
+            {
+
+            }
+
+        }
+
+        private int GetParentProcessId(Process p)
+        {
+            int parentID = 0;
+
+            try
+            {
+                ManagementObject managementObject = new ManagementObject("win32_process.handle='" + p.Id + "'");
+
+                managementObject.Get();
+
+                parentID = Convert.ToInt32(managementObject["ParentProcessId"]);
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return parentID;
         }
     }
 }

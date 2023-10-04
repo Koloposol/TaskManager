@@ -175,7 +175,7 @@ namespace TaskManager
 
         private void GetHardWareInfo(string key, ListView list)
         {
-            list.Clear();
+            list.Items.Clear();
 
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM " + key);
 
@@ -419,7 +419,94 @@ namespace TaskManager
 
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            string key = string.Empty;
 
+            switch (toolStripComboBox1.SelectedItem.ToString())
+            {
+                case "Процессор":
+
+                    key = "Win32_Processor";
+
+                    break;
+
+                case "Видеокарта":
+
+                    key = "Win32_VideoController";
+
+                    break;
+
+                case "Чипсет":
+
+                    key = "Win32_IDEController";
+
+                    break;
+
+                case "Батарея":
+
+                    key = "Win32_Battery";
+
+                    break;
+
+                case "Биос":
+
+                    key = "Win32_BIOS";
+
+                    break;
+
+                case "Оперативная память":
+
+                    key = "Win32_PhysicalMemory";
+
+                    break;
+
+                case "Кэш":
+
+                    key = "Win32_CacheMemory";
+
+                    break;
+
+                case "USB":
+
+                    key = "Win32_USBController";
+
+                    break;
+
+                case "Диск":
+
+                    key = "Win32_DiskDrive";
+
+                    break;
+
+                case "Логические диски":
+
+                    key = "Win32_LogicalDisk";
+
+                    break;
+
+                case "Клавиатура":
+
+                    key = "Win32_Keyboard";
+
+                    break;
+
+                case "Сеть":
+
+                    key = "Win32_NetworkAdapter";
+
+                    break;
+
+                case "Пользователи":
+
+                    key = "Win32_Account";
+
+                    break;
+
+                default:
+                    key = "Win32_Processor";
+                    break;
+            }
+
+            GetHardWareInfo(key, listView2);
         }
     }
 }

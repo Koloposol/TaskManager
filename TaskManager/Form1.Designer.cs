@@ -281,6 +281,7 @@
             "Пользователи"});
             this.toolStripComboBox1.Name = "toolStripComboBox1";
             this.toolStripComboBox1.Size = new System.Drawing.Size(121, 25);
+            this.toolStripComboBox1.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox1_SelectedIndexChanged);
             // 
             // listView2
             // 
@@ -307,7 +308,6 @@
             // columnHeader4
             // 
             this.columnHeader4.Text = "Значение";
-            this.columnHeader4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.columnHeader4.Width = 200;
             // 
             // Form1

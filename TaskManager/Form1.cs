@@ -173,8 +173,105 @@ namespace TaskManager
             return parentID;
         }
 
+        private void GetHardWareInfo(string key, ListView list)
+        {
+            list.Clear();
+
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM " + key);
+
+            try
+            {
+                foreach (ManagementObject obj in searcher.Get())
+                {
+                    ListViewGroup listViewGroup;
+
+                    try
+                    {
+                        listViewGroup = list.Groups.Add(obj["Name"].ToString(), obj["Name"].ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        listViewGroup = list.Groups.Add(obj.ToString(), obj.ToString());
+                    }
+
+
+                    if(obj.Properties.Count == 0)
+                    {
+                        MessageBox.Show("Информация не найдена", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        return;
+                    }
+
+                    foreach (PropertyData data in obj.Properties)
+                    {
+                        ListViewItem item = new ListViewItem(listViewGroup);
+
+                        if (list.Items.Count % 2 != 0)
+                        {
+                            item.BackColor = Color.Azure;
+                        }
+                        else
+                        {
+                            item.BackColor = Color.LightSteelBlue;
+                        }
+
+                        item.Text = data.Name;
+
+                        if (data.Value != null && !string.IsNullOrEmpty(data.Value.ToString()))
+                        {
+                            switch (data.Value.GetType().ToString())
+                            {
+                                case "System.String[]":
+
+                                    string[] stringData = data.Value as string[];
+
+                                    string resStr1 = string.Empty;
+
+                                    foreach (string s in stringData)
+                                    {
+                                        resStr1 += $"{s} ";
+                                    }
+
+                                    item.SubItems.Add(resStr1);
+
+                                    break;
+
+                                case "System.UInt16[]":
+
+                                    ushort[] ushortData = data.Value as ushort[];
+
+                                    string resStr2 = string.Empty;
+
+                                    foreach(ushort u in ushortData)
+                                    {
+                                        resStr2 += $"{Convert.ToString(u)} ";
+                                    }
+
+                                    item.SubItems.Add(resStr2);
+
+                                    break;
+
+                                default:
+
+                                    item.SubItems.Add(data.Value.ToString());
+
+                                    break;
+                            }
+
+                            list.Items.Add(item);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
+            //Процессы
             processes = new List<Process>();
 
             processes = Process.GetProcesses().ToList<Process>();
@@ -183,6 +280,9 @@ namespace TaskManager
 
             comparer = new ListViewItemComparer();
             comparer.ColumnIndex = 0;
+
+            //Характеристики
+            toolStripComboBox1.SelectedIndex = 0;
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
@@ -315,6 +415,11 @@ namespace TaskManager
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -24,6 +24,7 @@ namespace TaskManager
         {
             InitializeComponent();
         }
+        CPUtemp temp = new CPUtemp();
 
         private void GetProcesses()
         {
@@ -507,6 +508,26 @@ namespace TaskManager
             }
 
             GetHardWareInfo(key, listView2);
+        }
+
+        private void toolStrip3_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
+        {
+
+            if (temp == null || temp.IsDisposed)
+            {
+                temp = new CPUtemp();
+                temp.Show();
+            }
+            else
+            {
+                temp.Show();
+                temp.Focus();
+            }
         }
     }
 }

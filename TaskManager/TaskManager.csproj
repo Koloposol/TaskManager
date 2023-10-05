@@ -71,6 +71,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CPUtemp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CPUtemp.Designer.cs">
+      <DependentUpon>CPUtemp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

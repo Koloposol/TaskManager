@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Management;
+using System.Runtime.InteropServices;
 using Microsoft.VisualBasic;
 
 namespace TaskManager
@@ -19,6 +20,12 @@ namespace TaskManager
         private List<Process> processes = null;
 
         private ListViewItemComparer comparer = null;
+
+        private float cpu;
+
+        private float ram;
+
+        private ulong installedMemory;
 
         public Form1()
         {
@@ -284,7 +291,45 @@ namespace TaskManager
 
             //Характеристики
             toolStripComboBox1.SelectedIndex = 0;
+
+            //Системный монитор
+            MEMORYSTATUSEX mEMORYSTATUSEX = new MEMORYSTATUSEX();
+
+            if (GlobalMemoryStatusEx(mEMORYSTATUSEX))
+            {
+                installedMemory = mEMORYSTATUSEX.ullTotalPhys;
+            }
+
+            label10.Text = Convert.ToString(installedMemory / 1000000000) + " Гб";
+
+            timer1.Interval = 1000;
+
+            timer1.Start();
         }
+
+        //Реализация класса для получения общего объема памяти (Системный монитор) 
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        private class MEMORYSTATUSEX
+        {
+            public uint dwLength;
+            public uint dwMemoryLength;
+            public ulong ullTotalPhys;
+            public ulong ullAvailPhys;
+            public ulong ullTotalPageFile;
+            public ulong ullAvailPageFile;
+            public ulong ullTotalVirtual;
+            public ulong ullAvailVirtual;
+            public ulong ullAvailExtandadVirtual;
+
+            public MEMORYSTATUSEX()
+            {
+                this.dwLength = (uint)Marshal.SizeOf(typeof(MEMORYSTATUSEX));
+            }
+        }
+
+        [return: MarshalAs(UnmanagedType.Bool)]
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        static extern bool GlobalMemoryStatusEx([In, Out] MEMORYSTATUSEX lpBuffer);
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
@@ -538,6 +583,28 @@ namespace TaskManager
         private void label2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            cpu = performanceCPU.NextValue();
+            ram = performanceRAM.NextValue();
+
+            //Настройка шкал
+            progressBar1.Value = (int)cpu;
+            progressBar2.Value = (int)ram;
+
+            //Настройка %-ов шкал
+            label3.Text = Convert.ToString(Math.Round(cpu, 1)) + " %";
+            label4.Text = Convert.ToString(Math.Round(ram, 1)) + " %";
+
+            //Настройка нижних значений
+            label6.Text = Convert.ToString(Math.Round((ram / 100 * installedMemory) / 1000000000, 1)) + " Гб";
+            label8.Text = Convert.ToString(Math.Round((installedMemory - ram / 100 * installedMemory) / 1000000000, 1)) + " Гб";
+
+            //Настройка диаграммы
+            chart1.Series["ЦП"].Points.AddY(cpu);
+            chart1.Series["ОЗУ"].Points.AddY(ram);
         }
     }
 }

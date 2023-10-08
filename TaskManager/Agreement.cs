@@ -16,5 +16,24 @@ namespace TaskManager
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (radioButton1.Checked == true)
+            {
+                Form1 main = new Form1();
+                main.Show();
+
+                this.Hide();
+            }
+            else if (radioButton2.Checked == true)
+            {
+                Environment.Exit(0);
+            }
+            else
+            {
+                
+            }
+        }
     }
 }

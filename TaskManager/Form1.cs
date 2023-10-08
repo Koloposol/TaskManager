@@ -460,7 +460,7 @@ namespace TaskManager
 
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            Environment.Exit(0);
         }
 
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -605,6 +605,11 @@ namespace TaskManager
             //Настройка диаграммы
             chart1.Series["ЦП"].Points.AddY(cpu);
             chart1.Series["ОЗУ"].Points.AddY(ram);
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }

@@ -33,14 +33,14 @@ namespace TaskManager
         }
         CPUtemp temp = new CPUtemp();
 
-        private void GetProcesses()
+        public void GetProcesses()
         {
             processes.Clear();
 
             processes = Process.GetProcesses().ToList<Process>();
         }
 
-        private void RefreshProcessesList()
+        public void RefreshProcessesList()
         {
             try
             {
@@ -607,7 +607,7 @@ namespace TaskManager
             chart1.Series["ОЗУ"].Points.AddY(ram);
         }
 
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        public void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             Environment.Exit(0);
         }

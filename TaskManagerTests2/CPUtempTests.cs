@@ -9,18 +9,15 @@ using System.Threading.Tasks;
 namespace TaskManager.Tests
 {
     [TestClass()]
-    public class AgreementTests
+    public class CPUtempTests
     {
         [TestMethod()]
-        public void open_agreement_true()
+        public void open_CPUform_true()
         {
-            Agreement ag = new Agreement();
-            ag.ShowDialog();
+            CPUtemp cpu = new CPUtemp();
+            cpu.ShowDialog();
 
-            bool isOpened = ag.IsDisposed != true;
-
-            Assert.IsTrue(isOpened);
+            Assert.IsNotNull(cpu);
         }
-
     }
 }

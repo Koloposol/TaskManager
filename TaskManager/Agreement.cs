@@ -17,7 +17,7 @@ namespace TaskManager
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        public void button1_Click(object sender, EventArgs e)
         {
             if (radioButton1.Checked == true)
             {
